@@ -6,7 +6,8 @@ on:
       layout_id:
         description: "Layout id available in URL https://configure.zsa.io/voyager/layouts/[ID_IS_HERE]/latest"
         required: true
-        default: "g7jjw"
+#       https://configure.zsa.io/voyager/layouts/M4Mm0/latest/0
+        default: "M4Mm0"
       layout_geometry:
         description: "voyager|moonlander|ergodox_ez"
         required: true
