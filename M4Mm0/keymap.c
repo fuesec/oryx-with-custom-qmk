@@ -46,8 +46,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [4] = LAYOUT_voyager(
     TO(1),          LCTL(LSFT(KC_MEDIA_EJECT)),MAC_DND,        LALT(LGUI(KC_MEDIA_EJECT)),LGUI(LCTL(KC_Q)),LGUI(LSFT(KC_3)),                                KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          QK_BOOT,        
     KC_NO,          KC_MEDIA_PREV_TRACK,KC_MEDIA_NEXT_TRACK,KC_MEDIA_STOP,  KC_MEDIA_PLAY_PAUSE,LGUI(LSFT(KC_4)),                                KC_NO,          KC_MS_WH_DOWN,  KC_MS_WH_UP,    KC_MS_WH_LEFT,  KC_MS_WH_RIGHT, KC_MS_ACCEL0,   
-    KC_NO,          KC_BRIGHTNESS_DOWN,KC_BRIGHTNESS_UP,KC_AUDIO_VOL_DOWN,KC_AUDIO_VOL_UP,KC_AUDIO_MUTE,                                  KC_NO,          KC_MS_LEFT,     KC_MS_RIGHT,    KC_MS_DOWN,     KC_MS_UP,       KC_MS_ACCEL1,   
-    KC_NO,          RGB_VAD,        RGB_VAI,        KC_NO,          KC_NO,          KC_NO,                                          KC_NO,          KC_MS_BTN1,     KC_MS_BTN2,     KC_NO,          KC_NO,          KC_MS_ACCEL2,   
+    KC_NO,          KC_NO,          KC_NO,          KC_MS_BTN2,     KC_MS_BTN1,     KC_NO,                                          KC_NO,          KC_MS_LEFT,     KC_MS_RIGHT,    KC_MS_DOWN,     KC_MS_UP,       KC_MS_ACCEL1,   
+    KC_NO,          KC_BRIGHTNESS_DOWN,KC_BRIGHTNESS_UP,KC_AUDIO_VOL_DOWN,KC_AUDIO_VOL_UP,KC_AUDIO_MUTE,                                  KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_MS_ACCEL2,   
                                                     KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT
   ),
 };
