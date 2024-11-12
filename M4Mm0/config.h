@@ -19,9 +19,9 @@
 #define MOUSEKEY_DELAY 40
 
 #undef MOUSEKEY_WHEEL_INTERVAL
-#define MOUSEKEY_WHEEL_INTERVAL 40
+#define MOUSEKEY_WHEEL_INTERVAL 65
 
-#define SERIAL_NUMBER "M4Mm0/NjBmX"
+#define SERIAL_NUMBER "M4Mm0/aAnYV"
 #define LAYER_STATE_8BIT
 #define HSS(report) host_system_send(record->event.pressed ? report : 0); return false
 
