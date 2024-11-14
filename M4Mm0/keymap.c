@@ -189,11 +189,11 @@ tap_dance_action_t tap_dance_actions[] = {
 
 // customization
 const key_override_t delete_key_override =
-    ko_make_basic(MOD_MASK_SHIFT, KC_BSPC, KC_DEL);
+    ko_make_basic(MOD_MASK_CSAG, KC_BSPC, KC_DEL);
 
 const key_override_t *key_overrides_list[] = {
     &delete_key_override,
-    NULL  // NULL-terminate the array
+    NULL
 };
 
 const key_override_t **key_overrides = (const key_override_t **)key_overrides_list;
