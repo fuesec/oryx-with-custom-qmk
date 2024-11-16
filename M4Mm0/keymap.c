@@ -6,9 +6,22 @@
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
   MAC_DND,
+  NEXT_COLOR = ML_SAFE_RANGE, // chris customization
 };
 
+// Define an array of color codes
+const uint32_t color_array[] = {
+    RGB_RED, RGB_GREEN, RGB_BLUE, RGB_YELLOW, RGB_PURPLE
+};
 
+// Number of colors in the array
+#define NUM_COLORS (sizeof(color_array) / sizeof(color_array[0]))
+
+// Track the current color index
+static uint8_t current_color_index = 0;
+
+// Define the layer to which the color is applied
+#define TARGET_LAYER 1
 
 enum tap_dance_codes {
   DANCE_0,
@@ -16,7 +29,7 @@ enum tap_dance_codes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
-    KC_NO,          KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_NO,          
+    KC_NO,          KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           NEXT_COLOR,
     KC_ESCAPE,      KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSPC,        
     KC_TAB,         KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCLN,        KC_ENTER,       
     KC_LEFT_SHIFT,  KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RIGHT_SHIFT, 
@@ -129,6 +142,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         rgblight_mode(1);
       }
       return false;
+    case NEXT_COLOR: // chris customization
+      if (record->event.pressed) {
+        // Increment the color index
+        current_color_index = (current_color_index + 1) % NUM_COLORS;
+
+        // Apply the color to the target layer
+        rgblight_set_layer_state(TARGET_LAYER, true);
+        rgblight_setrgb_layer(color_array[current_color_index], TARGET_LAYER);
+      }
+    return false; // Prevent further processing
   }
   return true;
 }
@@ -187,7 +210,7 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 
 
-// customization
+// chris customization
 const key_override_t delete_key_override =
     ko_make_basic(MOD_MASK_CSAG, KC_BSPC, KC_DEL);
 
