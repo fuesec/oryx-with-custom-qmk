@@ -6,7 +6,7 @@
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
   MAC_DND,
-  NEXT_COLOR = ML_SAFE_RANGE, // chris customization
+  NEXT_COLOR, // chris customization
 };
 
 // Define an array of color codes
