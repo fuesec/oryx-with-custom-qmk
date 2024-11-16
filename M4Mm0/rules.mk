@@ -8,5 +8,7 @@ TAP_DANCE_ENABLE = yes
 SPACE_CADET_ENABLE = no
 
 
-# customization
+# chris customization
 KEY_OVERRIDE_ENABLE = yes
+RGBLIGHT_ENABLE = yes
+RGBLIGHT_LAYERS = yes
