@@ -27,3 +27,4 @@
 
 #define RGB_MATRIX_STARTUP_SPD 60
 
+#define RGBLIGHT_LAYERS
