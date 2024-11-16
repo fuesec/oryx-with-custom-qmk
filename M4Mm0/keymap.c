@@ -151,7 +151,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         rgblight_set_layer_state(TARGET_LAYER, true);
         rgblight_setrgb_layer(color_array[current_color_index], TARGET_LAYER);
       }
-    return false; // Prevent further processing
+      return false; // Prevent further processing
   }
   return true;
 }
