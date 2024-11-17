@@ -10,8 +10,10 @@ enum custom_keycodes {
 };
 
 // Define an array of color codes
-const uint32_t color_array[] = {
-    RGB_RED, RGB_GREEN, RGB_BLUE, RGB_YELLOW, RGB_PURPLE
+const uint8_t color_array[][3] = {
+  {315,100,50}, // #ff00bf
+  {236,100,100}, // #0112ff
+  {52,100,50} // #ffde00
 };
 
 // Number of colors in the array
@@ -88,11 +90,20 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 
 void set_layer_color(int layer) {
   for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
-    HSV hsv = {
+    HSV hsv = {0,0,0};
+    if (i == TARGET_LAYER) {
+      hsv = {
+        .h = pgm_read_byte(&color_array[current_color_index][0]),
+        .s = pgm_read_byte(&color_array[current_color_index][1]),
+        .v = pgm_read_byte(&color_array[current_color_index][2]),
+        };
+    } else {
+      hsv = {
       .h = pgm_read_byte(&ledmap[layer][i][0]),
       .s = pgm_read_byte(&ledmap[layer][i][1]),
       .v = pgm_read_byte(&ledmap[layer][i][2]),
-    };
+      };
+    }
     if (!hsv.h && !hsv.s && !hsv.v) {
         rgb_matrix_set_color( i, 0, 0, 0 );
     } else {
@@ -146,10 +157,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         // Increment the color index
         current_color_index = (current_color_index + 1) % NUM_COLORS;
-
-        // Apply the color to the target layer
-        rgblight_set_layer_state(TARGET_LAYER, true);
-        rgblight_setrgb_layer(color_array[current_color_index], TARGET_LAYER);
+        set_layer_color(TARGET_LAYER);
       }
       return false; // Prevent further processing
   }

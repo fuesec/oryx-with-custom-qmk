@@ -10,5 +10,3 @@ SPACE_CADET_ENABLE = no
 
 # chris customization
 KEY_OVERRIDE_ENABLE = yes
-RGBLIGHT_ENABLE = yes
-RGBLIGHT_LAYERS = yes

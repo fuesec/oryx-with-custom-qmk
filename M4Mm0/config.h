@@ -26,5 +26,3 @@
 #define HSS(report) host_system_send(record->event.pressed ? report : 0); return false
 
 #define RGB_MATRIX_STARTUP_SPD 60
-
-#define RGBLIGHT_LAYERS
