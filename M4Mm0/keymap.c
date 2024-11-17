@@ -91,7 +91,7 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 void set_layer_color(int layer) {
   for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
     HSV hsv;
-    if (i == TARGET_LAYER) {
+    if (layer == TARGET_LAYER) {
       hsv = (HSV){
         .h = pgm_read_byte(&color_array[current_color_index][0]),
         .s = pgm_read_byte(&color_array[current_color_index][1]),
