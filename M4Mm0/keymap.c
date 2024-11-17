@@ -11,9 +11,9 @@ enum custom_keycodes {
 
 // Define an array of color codes
 const uint8_t PROGMEM color_array[][3] = {
-  {315,100,50}, // #ff00bf
-  {236,100,100}, // #0112ff
-  {52,100,50} // #ffde00
+  [0] = {315,100,50}, // #ff00bf
+  [1] = {236,100,100}, // #0112ff
+  [2] = {52,100,50} // #ffde00
 };
 
 // Number of colors in the array
@@ -96,7 +96,7 @@ void set_layer_color(int layer) {
         .h = pgm_read_byte(&color_array[current_color_index][0]),
         .s = pgm_read_byte(&color_array[current_color_index][1]),
         .v = pgm_read_byte(&color_array[current_color_index][2]),
-        };
+      };
     } else {
       hsv = {
       .h = pgm_read_byte(&ledmap[layer][i][0]),
