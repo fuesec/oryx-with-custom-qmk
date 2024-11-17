@@ -10,7 +10,7 @@ enum custom_keycodes {
 };
 
 // Define an array of color codes
-const uint8_t color_array[][3] = {
+const uint8_t PROGMEM color_array[][3] = {
   {315,100,50}, // #ff00bf
   {236,100,100}, // #0112ff
   {52,100,50} // #ffde00
