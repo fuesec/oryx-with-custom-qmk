@@ -6,23 +6,19 @@
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
   MAC_DND,
-  NEXT_COLOR, // chris customization
+  NEXT_COLOR,
 };
 
-// Define an array of color codes
 const uint8_t PROGMEM color_array[][3] = {
   [0] = {223, 255, 127}, // #ff00bf
   [1] = {167, 255, 255}, // #0112ff
   [2] = {37, 255, 127} // #ffde00
 };
 
-// Number of colors in the array
 #define NUM_COLORS (sizeof(color_array) / sizeof(color_array[0]))
 
-// Track the current color index
 static uint8_t current_color_index = 0;
 
-// Define the layer to which the color is applied
 #define TARGET_LAYER 1
 
 enum tap_dance_codes {
@@ -218,7 +214,6 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 
 
-// chris customization
 const key_override_t delete_key_override =
     ko_make_basic(MOD_MASK_CSAG, KC_BSPC, KC_DEL);
 
