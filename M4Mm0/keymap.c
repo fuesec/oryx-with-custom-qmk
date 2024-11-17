@@ -90,15 +90,15 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 
 void set_layer_color(int layer) {
   for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
-    HSV hsv = {0,0,0};
+    HSV hsv;
     if (i == TARGET_LAYER) {
-      hsv = (HSV) {
+      hsv = {
         .h = pgm_read_byte(&color_array[current_color_index][0]),
         .s = pgm_read_byte(&color_array[current_color_index][1]),
         .v = pgm_read_byte(&color_array[current_color_index][2]),
       };
     } else {
-      hsv = (HSV) {
+      hsv = {
       .h = pgm_read_byte(&ledmap[layer][i][0]),
       .s = pgm_read_byte(&ledmap[layer][i][1]),
       .v = pgm_read_byte(&ledmap[layer][i][2]),
