@@ -92,13 +92,13 @@ void set_layer_color(int layer) {
   for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
     HSV hsv;
     if (i == TARGET_LAYER) {
-      hsv = {
+      hsv = (HSV){
         .h = pgm_read_byte(&color_array[current_color_index][0]),
         .s = pgm_read_byte(&color_array[current_color_index][1]),
         .v = pgm_read_byte(&color_array[current_color_index][2]),
       };
     } else {
-      hsv = {
+      hsv = (HSV){
       .h = pgm_read_byte(&ledmap[layer][i][0]),
       .s = pgm_read_byte(&ledmap[layer][i][1]),
       .v = pgm_read_byte(&ledmap[layer][i][2]),
