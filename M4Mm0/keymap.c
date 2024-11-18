@@ -149,13 +149,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         rgblight_mode(1);
       }
       return false;
-    case NEXT_COLOR: // chris customization
+    case NEXT_COLOR:
       if (record->event.pressed) {
-        // Increment the color index
         current_color_index = (current_color_index + 1) % NUM_COLORS;
         set_layer_color(TARGET_LAYER);
       }
-      return false; // Prevent further processing
+      return false;
   }
   return true;
 }
