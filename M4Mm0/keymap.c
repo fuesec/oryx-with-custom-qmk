@@ -9,10 +9,10 @@ enum custom_keycodes {
   NEXT_COLOR,
 };
 
-const uint8_t PROGMEM color_array[][3] = {
-  [0] = {255, 255, 255}, // #ff00bf
-  [1] = {167, 255, 255}, // #0112ff
-  [2] = {37, 255, 127} // #ffde00
+const uint8_t PROGMEM color_array[][1][3] = {
+  [0] = { {255, 255, 255} }, // #ff00bf
+  [1] = { {167, 255, 255} }, // #0112ff
+  [2] = { {37,255,255} }, // #ffde00
 };
 
 #define NUM_COLORS (sizeof(color_array) / sizeof(color_array[0]))
@@ -87,9 +87,9 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 void set_layer_color(int layer) {
   if (layer == TARGET_LAYER) {
     HSV hsv = {
-      .h = pgm_read_byte(&color_array[current_color_index][0]),
-      .s = pgm_read_byte(&color_array[current_color_index][1]),
-      .v = pgm_read_byte(&color_array[current_color_index][2]),
+      .h = pgm_read_byte(&color_array[current_color_index][0][0]),
+      .s = pgm_read_byte(&color_array[current_color_index][0][1]),
+      .v = pgm_read_byte(&color_array[current_color_index][0][2]),
     };
     RGB rgb = hsv_to_rgb( hsv );
     float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
