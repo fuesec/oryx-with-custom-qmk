@@ -19,7 +19,7 @@ const uint8_t PROGMEM color_array[][3] = {
 
 static uint8_t current_color_index = 0;
 
-#define TARGET_LAYER 1
+#define TARGET_LAYER 0
 
 enum tap_dance_codes {
   DANCE_0,
