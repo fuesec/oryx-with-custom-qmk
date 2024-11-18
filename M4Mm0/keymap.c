@@ -10,7 +10,7 @@ enum custom_keycodes {
 };
 
 const uint8_t PROGMEM color_array[][3] = {
-  [0] = {223, 255, 127}, // #ff00bf
+  [0] = {255, 255, 255}, // #ff00bf
   [1] = {167, 255, 255}, // #0112ff
   [2] = {37, 255, 127} // #ffde00
 };
