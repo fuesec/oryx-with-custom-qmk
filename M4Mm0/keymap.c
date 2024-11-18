@@ -9,13 +9,18 @@ enum custom_keycodes {
   NEXT_COLOR,
 };
 
-const uint8_t PROGMEM color_array[][1][3] = {
-  [0] = { {255, 255, 255} }, // #ff00bf pink
-  [1] = { {167, 255, 255} }, // #0112ff blue
-  [2] = { {37,255,255} }, // #ffde00 yellow
+enum color_index {
+  PINK = 0,
+  BLUE,
+  YELLOW,
+  COLOR_COUNT
 };
 
-#define NUM_COLORS (sizeof(color_array) / sizeof(color_array[0]))
+const uint8_t PROGMEM color_array[COLOR_COUNT][3] = {
+  [PINK] = {224, 255, 255}, // #ff00bf
+  [BLUE] = {167, 255, 255}, // #0112ff
+  [YELLOW] = {37,255,255}, // #ffde00
+};
 
 static uint8_t current_color_index = 0;
 
@@ -87,9 +92,9 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 void set_layer_color(int layer) {
   if (layer == TARGET_LAYER) {
     HSV hsv = {
-      .h = pgm_read_byte(&color_array[current_color_index][0][0]),
-      .s = pgm_read_byte(&color_array[current_color_index][0][1]),
-      .v = pgm_read_byte(&color_array[current_color_index][0][2]),
+      .h = pgm_read_byte(&color_array[current_color_index][0]),
+      .s = pgm_read_byte(&color_array[current_color_index][1]),
+      .v = pgm_read_byte(&color_array[current_color_index][2]),
     };
     RGB rgb = hsv_to_rgb( hsv );
     float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
@@ -153,7 +158,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
     case NEXT_COLOR:
       if (record->event.pressed) {
-        current_color_index = (current_color_index + 1) % NUM_COLORS;
+        current_color_index = (current_color_index + 1) % COLOR_COUNT;
         set_layer_color(TARGET_LAYER);
       }
       return false;
