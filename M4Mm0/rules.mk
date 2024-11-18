@@ -8,5 +8,4 @@ TAP_DANCE_ENABLE = yes
 SPACE_CADET_ENABLE = no
 
 
-# chris customization
 KEY_OVERRIDE_ENABLE = yes
