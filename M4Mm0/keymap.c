@@ -10,9 +10,9 @@ enum custom_keycodes {
 };
 
 const uint8_t PROGMEM color_array[][1][3] = {
-  [0] = { {255, 255, 255} }, // #ff00bf
-  [1] = { {167, 255, 255} }, // #0112ff
-  [2] = { {37,255,255} }, // #ffde00
+  [0] = { {255, 255, 255} }, // #ff00bf pink
+  [1] = { {167, 255, 255} }, // #0112ff blue
+  [2] = { {37,255,255} }, // #ffde00 yellow
 };
 
 #define NUM_COLORS (sizeof(color_array) / sizeof(color_array[0]))
