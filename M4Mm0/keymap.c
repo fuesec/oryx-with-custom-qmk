@@ -85,21 +85,23 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 };
 
 void set_layer_color(int layer) {
+  if (layer == TARGET_LAYER) {
+    HSV hsv = {
+      .h = pgm_read_byte(&color_array[current_color_index][0]),
+      .s = pgm_read_byte(&color_array[current_color_index][1]),
+      .v = pgm_read_byte(&color_array[current_color_index][2]),
+    };
+    RGB rgb = hsv_to_rgb( hsv );
+    float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+    rgb_matrix_set_color_all( f * rgb.r, f * rgb.g, f * rgb.b );
+    return;
+  }
   for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
-    HSV hsv;
-    if (layer == TARGET_LAYER) {
-      hsv = (HSV){
-        .h = pgm_read_byte(&color_array[current_color_index][0]),
-        .s = pgm_read_byte(&color_array[current_color_index][1]),
-        .v = pgm_read_byte(&color_array[current_color_index][2]),
-      };
-    } else {
-      hsv = (HSV){
+    HSV hsv = {
       .h = pgm_read_byte(&ledmap[layer][i][0]),
       .s = pgm_read_byte(&ledmap[layer][i][1]),
       .v = pgm_read_byte(&ledmap[layer][i][2]),
-      };
-    }
+    };
     if (!hsv.h && !hsv.s && !hsv.v) {
         rgb_matrix_set_color( i, 0, 0, 0 );
     } else {
