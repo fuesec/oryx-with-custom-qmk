@@ -6,7 +6,6 @@
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
   MAC_DND,
-  NEXT_COLOR,
 };
 
 enum color_index {
@@ -22,6 +21,7 @@ const uint8_t PROGMEM color_array[COLOR_COUNT][3] = {
   [YELLOW] = {37,255,255}, // #ffde00
 };
 
+static uint8_t current_color_index = 0;
 
 #define TARGET_LAYER 0
 
@@ -154,12 +154,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
-      }
-      return false;
-    case NEXT_COLOR:
-      if (record->event.pressed) {
-        current_color_index = (current_color_index + 1) % COLOR_COUNT;
-        set_layer_color(TARGET_LAYER);
       }
       return false;
   }
