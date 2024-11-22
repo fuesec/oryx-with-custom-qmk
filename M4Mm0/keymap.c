@@ -90,11 +90,6 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 };
 
 void set_layer_color(int layer) {
-  if (layer == 4) {
-    rgb_matrix_mode(RGB_MATRIX_BREATHING);
-  } else {
-    rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
-  }
   if (layer == TARGET_LAYER) {
     HSV hsv = {
       .h = pgm_read_byte(&color_array[current_color_index][0]),
