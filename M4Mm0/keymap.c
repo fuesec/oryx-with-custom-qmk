@@ -128,15 +128,19 @@ bool rgb_matrix_indicators_user(void) {
       break;
     case 1:
       set_layer_color(1);
+      STATUS_LED_1(bool);
       break;
     case 2:
       set_layer_color(2);
+      STATUS_LED_2(bool);
       break;
     case 3:
       set_layer_color(3);
+      STATUS_LED_3(bool);
       break;
     case 4:
       set_layer_color(4);
+      STATUS_LED_4(bool);
       break;
    default:
     if (rgb_matrix_get_flags() == LED_FLAG_NONE)
@@ -244,3 +248,11 @@ const key_override_t *key_overrides_list[] = {
 };
 
 const key_override_t **key_overrides = (const key_override_t **)key_overrides_list;
+
+void housekeeping_task_user(void) {
+    if (!is_transport_connected()) {
+      TO(1);
+    } else {
+      TO(0);
+    }
+}
