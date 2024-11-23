@@ -252,7 +252,5 @@ const key_override_t **key_overrides = (const key_override_t **)key_overrides_li
 void housekeeping_task_user(void) {
     if (!is_transport_connected()) {
       layer_move(1);
-    } else {
-      layer_move(0);
     }
 }
