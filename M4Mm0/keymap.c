@@ -85,7 +85,6 @@ extern rgb_config_t rgb_matrix_config;
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
 
-  // Read the user config from EEPROM
   user_config.raw = eeconfig_read_user();
   current_color_index = user_config.color_index;
 }
@@ -173,6 +172,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case SWAP_BASE_LAYER_COLOR:
       if (record->event.pressed) {
         current_color_index = (current_color_index + 1) % COLOR_COUNT;
+        user_config.color_index = current_color_index;
       }
       return false;
   }
@@ -235,7 +235,6 @@ void dance_1_finished(tap_dance_state_t *state, void *user_data) {
     switch (dance_state[1].step) {
         case DOUBLE_TAP: {
 			eeconfig_update_user(user_config.raw);
-    		user_config.color_index = current_color_index;
             break;
         }
     }
@@ -270,18 +269,14 @@ const key_override_t *key_overrides_list[] = {
 const key_override_t **key_overrides = (const key_override_t **)key_overrides_list;
 
 void housekeeping_task_user(void) {
-    if (!is_transport_connected()) {
+    if (!is_transport_connected()) { // keyboard half is disconnected
       layer_move(1);
     }
 }
 
-void eeconfig_init_user(void) {  // EEPROM is getting reset!
+void eeconfig_init_user(void) {  // EEPROM is getting reset
   user_config.raw = 0;
-  user_config.color_index = 0; // We want this enabled by default
-  eeconfig_update_user(user_config.raw); // Write default value to EEPROM now
-
-//  // use the non noeeprom versions, to write these values to EEPROM too
-//  rgblight_enable(); // Enable RGB by default
-//  rgblight_sethsv(HSV_CYAN);  // Set it to CYAN by default
-//  rgblight_mode(1); // set to solid by default
+  current_color_index = 0;
+  user_config.color_index = current_color_index;
+  eeconfig_update_user(user_config.raw);
 }
