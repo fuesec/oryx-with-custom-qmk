@@ -133,9 +133,9 @@ void set_layer_color(int layer) {
   }
   if (layer == 4) {
     HSV hsv = {
-      .h = white[0]),
-      .s = white[1]),
-      .v = white[2]),
+      .h = white[0],
+      .s = white[1],
+      .v = white[2],
     };
     RGB rgb = hsv_to_rgb( hsv );
     float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
