@@ -42,8 +42,6 @@ typedef union {
 
 user_config_t user_config;
 
-static bool isCapsWordActive = false;
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
     KC_NO,  		KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_NO,
@@ -106,6 +104,20 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 
 };
 
+static void set_shift_keys_color() {
+    if (is_caps_word_on())
+      HSV hsv = {
+        .h = white[0]),
+        .s = white[1]),
+        .v = white[2]),
+      };
+      RGB rgb = hsv_to_rgb( hsv );
+      float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+      rgb_matrix_set_color( 36, f * rgb.r, f * rgb.g, f * rgb.b );
+      rgb_matrix_set_color( 48, f * rgb.r, f * rgb.g, f * rgb.b );
+    }
+}
+
 void set_layer_color(int layer) {
   if (layer == TARGET_LAYER) {
     HSV hsv = {
@@ -146,20 +158,6 @@ void set_layer_color(int layer) {
     }
   }
   set_shift_keys_color();
-}
-
-static void set_shift_keys_color() {
-    if (isCapsWordActive)
-      HSV hsv = {
-        .h = white[0]),
-        .s = white[1]),
-        .v = white[2]),
-      };
-      RGB rgb = hsv_to_rgb( hsv );
-      float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-      rgb_matrix_set_color( 36, f * rgb.r, f * rgb.g, f * rgb.b );
-      rgb_matrix_set_color( 48, f * rgb.r, f * rgb.g, f * rgb.b );
-    }
 }
 
 bool rgb_matrix_indicators_user(void) {
@@ -314,7 +312,6 @@ void eeconfig_init_user(void) {  // EEPROM is getting reset
 }
 
 void caps_word_set_user(bool active) {
-  isCapsWordActive = active;
   if (active) {
     set_shift_keys_color();
   } else {
