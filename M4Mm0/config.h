@@ -27,4 +27,4 @@
 
 #define RGB_MATRIX_STARTUP_SPD 60
 
-#define VOYAGER_USER_LEDS
+#define VOYAGER_USER_LEDS // disable default LED activation based on layer

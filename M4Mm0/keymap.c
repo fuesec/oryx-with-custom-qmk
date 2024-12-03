@@ -6,6 +6,7 @@
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
   MAC_DND,
+  SWAP_BASE_LAYER_COLOR,
 };
 
 enum color_index {
@@ -26,13 +27,22 @@ static uint8_t current_color_index = 0;
 #define TARGET_LAYER 0
 
 enum tap_dance_codes {
-  DANCE_0,
-  DANCE_1,
+  DANCE_0, // switch to base layer
+  DANCE_1, // persist color to EEPROM
 };
+
+typedef union {
+  uint32_t raw;
+  struct {
+    uint8_t   color_index :8;
+  };
+} user_config_t;
+
+user_config_t user_config;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
-    TD(DANCE_1),    KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_NO,
+    KC_NO,  		KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_NO,
     KC_ESCAPE,      KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSPC,        
     KC_TAB,         KC_A,           KC_S,           KC_D,           KC_F,           KC_G,                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCLN,        KC_ENTER,       
     KC_LEFT_SHIFT,  KC_Z,           KC_X,           KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RIGHT_SHIFT, 
@@ -62,8 +72,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [4] = LAYOUT_voyager(
     TO(1),          LCTL(LSFT(KC_MEDIA_EJECT)),MAC_DND,        LALT(LGUI(KC_MEDIA_EJECT)),LGUI(LCTL(KC_Q)),LGUI(LSFT(KC_3)),                                KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          QK_BOOT,        
     KC_NO,          KC_MEDIA_PREV_TRACK,KC_MEDIA_NEXT_TRACK,KC_MEDIA_STOP,  KC_MEDIA_PLAY_PAUSE,LGUI(LSFT(KC_4)),                                KC_NO,          KC_MS_WH_DOWN,  KC_MS_WH_UP,    KC_MS_WH_LEFT,  KC_MS_WH_RIGHT, KC_MS_ACCEL0,   
-    KC_NO,          KC_NO,          KC_NO,          KC_MS_BTN2,     KC_MS_BTN1,     KC_NO,                                          KC_NO,          KC_MS_LEFT,     KC_MS_RIGHT,    KC_MS_DOWN,     KC_MS_UP,       KC_MS_ACCEL1,   
-    KC_NO,          KC_BRIGHTNESS_DOWN,KC_BRIGHTNESS_UP,KC_AUDIO_VOL_DOWN,KC_AUDIO_VOL_UP,KC_AUDIO_MUTE,                                  KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_MS_ACCEL2,   
+    SWAP_BASE_LAYER_COLOR,          KC_NO,          KC_NO,          KC_MS_BTN2,     KC_MS_BTN1,     KC_NO,                                          KC_NO,          KC_MS_LEFT,     KC_MS_RIGHT,    KC_MS_DOWN,     KC_MS_UP,       KC_MS_ACCEL1,
+    TD(DANCE_1),    KC_BRIGHTNESS_DOWN,KC_BRIGHTNESS_UP,KC_AUDIO_VOL_DOWN,KC_AUDIO_VOL_UP,KC_AUDIO_MUTE,                                  KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_NO,          KC_MS_ACCEL2,
                                                     KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT
   ),
 };
@@ -128,19 +138,15 @@ bool rgb_matrix_indicators_user(void) {
       break;
     case 1:
       set_layer_color(1);
-      STATUS_LED_1(true);
       break;
     case 2:
       set_layer_color(2);
-      STATUS_LED_2(true);
       break;
     case 3:
       set_layer_color(3);
-      STATUS_LED_3(true);
       break;
     case 4:
       set_layer_color(4);
-      STATUS_LED_4(true);
       break;
    default:
     if (rgb_matrix_get_flags() == LED_FLAG_NONE)
@@ -158,6 +164,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
+      }
+      return false;
+    case SWAP_BASE_LAYER_COLOR:
+      if (record->event.pressed) {
+        current_color_index = (current_color_index + 1) % COLOR_COUNT;
       }
       return false;
   }
@@ -219,8 +230,8 @@ void dance_1_finished(tap_dance_state_t *state, void *user_data) {
     dance_state[1].step = dance_step(state);
     switch (dance_state[1].step) {
         case DOUBLE_TAP: {
-            current_color_index = (current_color_index + 1) % COLOR_COUNT;
-            set_layer_color(TARGET_LAYER);
+			eeconfig_update_user(user_config.raw);
+    		user_config.color_index = current_color_index;
             break;
         }
     }
@@ -238,9 +249,14 @@ tap_dance_action_t tap_dance_actions[] = {
         [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_1_finished, dance_1_reset),
 };
 
-
 const key_override_t delete_key_override =
-    ko_make_basic(MOD_MASK_CSAG, KC_BSPC, KC_DEL);
+	ko_make_with_layers_negmods_and_options(
+   		MOD_MASK_SHIFT,      // Trigger modifier
+    	KC_BSPC,             // Trigger key: play/pause
+    	KC_DEL,              // Replacement key
+    	~0,                  // Activate on all layers
+    	MOD_MASK_CAG,        // Do not activate when
+    	ko_option_no_reregister_trigger); // Specifies that the play key is not registered again after lifting "Trigger modifier"
 
 const key_override_t *key_overrides_list[] = {
     &delete_key_override,
@@ -253,4 +269,28 @@ void housekeeping_task_user(void) {
     if (!is_transport_connected()) {
       layer_move(1);
     }
+}
+
+void eeconfig_init_user(void) {  // EEPROM is getting reset!
+  user_config.raw = 0;
+  user_config.color_index = 0; // We want this enabled by default
+  eeconfig_update_user(user_config.raw); // Write default value to EEPROM now
+
+//  // use the non noeeprom versions, to write these values to EEPROM too
+//  rgblight_enable(); // Enable RGB by default
+//  rgblight_sethsv(HSV_CYAN);  // Set it to CYAN by default
+//  rgblight_mode(1); // set to solid by default
+}
+
+void keyboard_post_init_user(void) {
+  // Read the user config from EEPROM
+  user_config.raw = eeconfig_read_user();
+  current_color_index = user_config.color_index;
+
+//  // Set default layer, if enabled
+//  if (user_config.rgb_layer_change) {
+//    rgblight_enable_noeeprom();
+//    rgblight_sethsv_noeeprom(HSV_CYAN);
+//    rgblight_mode_noeeprom(1);
+//  }
 }
