@@ -105,7 +105,7 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 };
 
 static void set_shift_keys_color(void) {
-    if (is_caps_word_on())
+    if (is_caps_word_on()) {
       HSV hsv = {
         .h = white[0]),
         .s = white[1]),
