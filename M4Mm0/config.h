@@ -3,8 +3,6 @@
   See config.h options at https://docs.qmk.fm/#/config_options?id=the-configh-file
 */
 
-#define ONESHOT_TAP_TOGGLE 3
-
 #undef ONESHOT_TIMEOUT
 #define ONESHOT_TIMEOUT 2500
 
