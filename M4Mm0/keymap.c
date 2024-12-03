@@ -113,8 +113,8 @@ static void set_shift_keys_color(void) {
       };
       RGB rgb = hsv_to_rgb( hsv );
       float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-      rgb_matrix_set_color( 36, f * rgb.r, f * rgb.g, f * rgb.b );
-      rgb_matrix_set_color( 48, f * rgb.r, f * rgb.g, f * rgb.b );
+      rgb_matrix_set_color( 12, f * rgb.r, f * rgb.g, f * rgb.b );
+      rgb_matrix_set_color( 15, f * rgb.r, f * rgb.g, f * rgb.b );
     }
 }
 
