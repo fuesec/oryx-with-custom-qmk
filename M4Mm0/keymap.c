@@ -22,8 +22,6 @@ const uint8_t PROGMEM color_array[COLOR_COUNT][3] = {
   [YELLOW] = {37,255,255}, // #ffde00
 };
 
-const uint8_t white[3] = {0,0,255};
-
 static uint8_t current_color_index = 0;
 
 #define TARGET_LAYER 0
@@ -106,15 +104,8 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 
 static void set_shift_keys_color(void) {
     if (is_caps_word_on()) {
-      HSV hsv = {
-        .h = white[0],
-        .s = white[1],
-        .v = white[2],
-      };
-      RGB rgb = hsv_to_rgb( hsv );
-      float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-      rgb_matrix_set_color( 12, f * rgb.r, f * rgb.g, f * rgb.b );
-      rgb_matrix_set_color( 15, f * rgb.r, f * rgb.g, f * rgb.b );
+      rgb_matrix_set_color( 18, RGB_WHITE);
+      rgb_matrix_set_color( 49, RGB_WHITE);
     }
 }
 
@@ -132,14 +123,7 @@ void set_layer_color(int layer) {
     return;
   }
   if (layer == 4) {
-    HSV hsv = {
-      .h = white[0],
-      .s = white[1],
-      .v = white[2],
-    };
-    RGB rgb = hsv_to_rgb( hsv );
-    float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-    rgb_matrix_set_color_all( f * rgb.r, f * rgb.g, f * rgb.b );
+    rgb_matrix_set_color_all(RGB_WHITE);
     set_shift_keys_color();
     return;
   }
