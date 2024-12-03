@@ -22,6 +22,8 @@ const uint8_t PROGMEM color_array[COLOR_COUNT][3] = {
   [YELLOW] = {37,255,255}, // #ffde00
 };
 
+const uint8_t white[3] = {0,0,255};
+
 static uint8_t current_color_index = 0;
 
 #define TARGET_LAYER 0
@@ -39,6 +41,8 @@ typedef union {
 } user_config_t;
 
 user_config_t user_config;
+
+static bool isCapsWordActive = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
@@ -112,6 +116,19 @@ void set_layer_color(int layer) {
     RGB rgb = hsv_to_rgb( hsv );
     float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
     rgb_matrix_set_color_all( f * rgb.r, f * rgb.g, f * rgb.b );
+    set_shift_keys_color();
+    return;
+  }
+  if (layer == 4) {
+    HSV hsv = {
+      .h = white[0]),
+      .s = white[1]),
+      .v = white[2]),
+    };
+    RGB rgb = hsv_to_rgb( hsv );
+    float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+    rgb_matrix_set_color_all( f * rgb.r, f * rgb.g, f * rgb.b );
+    set_shift_keys_color();
     return;
   }
   for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
@@ -128,6 +145,21 @@ void set_layer_color(int layer) {
         rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
     }
   }
+  set_shift_keys_color();
+}
+
+static void set_shift_keys_color() {
+    if (isCapsWordActive)
+      HSV hsv = {
+        .h = white[0]),
+        .s = white[1]),
+        .v = white[2]),
+      };
+      RGB rgb = hsv_to_rgb( hsv );
+      float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+      rgb_matrix_set_color( 36, f * rgb.r, f * rgb.g, f * rgb.b );
+      rgb_matrix_set_color( 48, f * rgb.r, f * rgb.g, f * rgb.b );
+    }
 }
 
 bool rgb_matrix_indicators_user(void) {
@@ -255,23 +287,23 @@ tap_dance_action_t tap_dance_actions[] = {
 const key_override_t delete_key_override =
 	ko_make_with_layers_negmods_and_options(
    		MOD_MASK_SHIFT,      // Trigger modifier
-    	KC_BSPC,             // Trigger key: play/pause
+    	KC_BSPC,             // Trigger key
     	KC_DEL,              // Replacement key
     	~0,                  // Activate on all layers
     	MOD_MASK_CAG,        // Do not activate when
     	ko_option_no_reregister_trigger); // Specifies that the play key is not registered again after lifting "Trigger modifier"
 
 const key_override_t *key_overrides_list[] = {
-    &delete_key_override,
-    NULL
+  &delete_key_override,
+  NULL
 };
 
 const key_override_t **key_overrides = (const key_override_t **)key_overrides_list;
 
 void housekeeping_task_user(void) {
-    if (!is_transport_connected()) { // keyboard half is disconnected
-      layer_move(1);
-    }
+  if (!is_transport_connected()) { // keyboard half is disconnected
+    layer_move(1);
+  }
 }
 
 void eeconfig_init_user(void) {  // EEPROM is getting reset
@@ -279,4 +311,13 @@ void eeconfig_init_user(void) {  // EEPROM is getting reset
   current_color_index = 0;
   user_config.color_index = current_color_index;
   eeconfig_update_user(user_config.raw);
+}
+
+void caps_word_set_user(bool active) {
+  isCapsWordActive = active;
+  if (active) {
+    set_shift_keys_color();
+  } else {
+    set_layer_color(0);
+  }
 }

@@ -28,3 +28,5 @@
 #define RGB_MATRIX_STARTUP_SPD 60
 
 #define VOYAGER_USER_LEDS // disable default LED activation based on layer
+
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
