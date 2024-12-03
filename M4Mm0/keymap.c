@@ -84,6 +84,10 @@ extern rgb_config_t rgb_matrix_config;
 
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
+
+  // Read the user config from EEPROM
+  user_config.raw = eeconfig_read_user();
+  current_color_index = user_config.color_index;
 }
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
@@ -280,17 +284,4 @@ void eeconfig_init_user(void) {  // EEPROM is getting reset!
 //  rgblight_enable(); // Enable RGB by default
 //  rgblight_sethsv(HSV_CYAN);  // Set it to CYAN by default
 //  rgblight_mode(1); // set to solid by default
-}
-
-void keyboard_post_init_user(void) {
-  // Read the user config from EEPROM
-  user_config.raw = eeconfig_read_user();
-  current_color_index = user_config.color_index;
-
-//  // Set default layer, if enabled
-//  if (user_config.rgb_layer_change) {
-//    rgblight_enable_noeeprom();
-//    rgblight_sethsv_noeeprom(HSV_CYAN);
-//    rgblight_mode_noeeprom(1);
-//  }
 }
