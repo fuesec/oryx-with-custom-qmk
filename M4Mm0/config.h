@@ -1,8 +1,3 @@
-/*
-  Set any config.h overrides for your specific keymap here.
-  See config.h options at https://docs.qmk.fm/#/config_options?id=the-configh-file
-*/
-
 #undef ONESHOT_TIMEOUT
 #define ONESHOT_TIMEOUT 2500
 
@@ -19,7 +14,7 @@
 #undef MOUSEKEY_WHEEL_INTERVAL
 #define MOUSEKEY_WHEEL_INTERVAL 65
 
-#define SERIAL_NUMBER "M4Mm0/gW0me"
+#define SERIAL_NUMBER "M4Mm0/RjlKVb"
 #define LAYER_STATE_8BIT
 #define HSS(report) host_system_send(record->event.pressed ? report : 0); return false
 
