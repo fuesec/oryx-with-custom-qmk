@@ -215,7 +215,7 @@ enum {
     MORE_TAPS
 };
 
-static tap dance_state[2];
+static tap dance_state[1];
 
 uint8_t dance_step(tap_dance_state_t *state);
 
@@ -232,22 +232,23 @@ uint8_t dance_step(tap_dance_state_t *state) {
 }
 
 
-void dance_0_finished(tap_dance_state_t *state, void *user_data);
-void dance_0_reset(tap_dance_state_t *state, void *user_data);
+//void dance_0_finished(tap_dance_state_t *state, void *user_data);
+//void dance_0_reset(tap_dance_state_t *state, void *user_data);
+//
+//void dance_0_finished(tap_dance_state_t *state, void *user_data) {
+//    dance_state[0].step = dance_step(state);
+//    switch (dance_state[0].step) {
+//        case DOUBLE_TAP: layer_move(0); break;
+//    }
+//}
+//
+//void dance_0_reset(tap_dance_state_t *state, void *user_data) {
+//    wait_ms(10);
+//    switch (dance_state[0].step) {
+//    }
+//    dance_state[0].step = 0;
+//}
 
-void dance_0_finished(tap_dance_state_t *state, void *user_data) {
-    dance_state[0].step = dance_step(state);
-    switch (dance_state[0].step) {
-        case DOUBLE_TAP: layer_move(0); break;
-    }
-}
-
-void dance_0_reset(tap_dance_state_t *state, void *user_data) {
-    wait_ms(10);
-    switch (dance_state[0].step) {
-    }
-    dance_state[0].step = 0;
-}
 void dance_1_finished(tap_dance_state_t *state, void *user_data);
 void dance_1_reset(tap_dance_state_t *state, void *user_data);
 
@@ -269,7 +270,7 @@ void dance_1_reset(tap_dance_state_t *state, void *user_data) {
 }
 
 tap_dance_action_t tap_dance_actions[] = {
-        [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_0_finished, dance_0_reset),
+//        [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_0_finished, dance_0_reset),
         [DANCE_1] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_1_finished, dance_1_reset),
 };
 
