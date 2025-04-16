@@ -29,7 +29,7 @@ static uint8_t current_color_index = 0;
 #define TARGET_LAYER 0
 
 enum tap_dance_codes {
-  DANCE_0, // switch to base layer
+  DANCE_0, // switch to num pad layer
   DANCE_1, // persist color to EEPROM
 };
 
@@ -113,7 +113,6 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 
 static void set_shift_keys_color(void) {
     if (is_caps_word_on()) {
-      // rgb_matrix_set_color( 18, RGB_WHITE);
       rgb_matrix_set_color( 49, RGB_WHITE);
     }
 }
@@ -300,7 +299,7 @@ const key_override_t **key_overrides = (const key_override_t **)key_overrides_li
 
 void housekeeping_task_user(void) {
   if (!is_transport_connected()) { // keyboard half is disconnected
-    layer_move(1);
+//    layer_move(1);
   }
 }
 
