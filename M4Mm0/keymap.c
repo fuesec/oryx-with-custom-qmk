@@ -6,6 +6,7 @@
 
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
+  ST_MACRO_0,
   MAC_DND,
   SWAP_BASE_LAYER_COLOR,
 };
