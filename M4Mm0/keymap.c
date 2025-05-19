@@ -8,6 +8,8 @@ enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
   MAC_DND,
   CMD_TAB,
+  CLEAR_OSM_MOD_LEFT,
+  CLEAR_OSM_MOD_RIGHT,
   SWAP_BASE_LAYER_COLOR,
 };
 
@@ -58,14 +60,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                     KC_TRANSPARENT, KC_NO,                                          KC_NO,          KC_TRANSPARENT
   ),
   [2] = LAYOUT_voyager(
-    KC_TRANSPARENT, KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,                                          KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_TRANSPARENT, 
+    CLEAR_OSM_MOD_LEFT, KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,                                          KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_TRANSPARENT,
     KC_TRANSPARENT, KC_LEFT_CTRL,   KC_LEFT_SHIFT,  KC_LEFT_ALT,    KC_LEFT_GUI,    KC_NO,                                          KC_HOME,        LGUI(KC_LBRC),  LGUI(KC_RBRC),  KC_NO,          KC_NO,          KC_TRANSPARENT, 
     KC_TRANSPARENT, OSM(MOD_LCTL),  OSM(MOD_LSFT),  OSM(MOD_LALT),  OSM(MOD_LGUI),  OSM(MOD_HYPR),                                  KC_END,         KC_LEFT,        KC_RIGHT,       KC_DOWN,        KC_UP,          KC_TRANSPARENT, 
     KC_NO,          KC_NO,          KC_NO,          KC_NO,          OSM(MOD_MEH),   KC_NO,                                          KC_NO,          LGUI(LSFT(KC_LBRC)),LGUI(LSFT(KC_RBRC)),KC_PGDN,        KC_PAGE_UP,     KC_NO,          
                                                     KC_NO,          KC_TRANSPARENT,                                 MO(4),          KC_TRANSPARENT
   ),
   [3] = LAYOUT_voyager(
-    KC_TRANSPARENT, KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,                                          KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,                                          KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         CLEAR_OSM_MOD_RIGHT,
     KC_TRANSPARENT, KC_GRAVE,       KC_LBRC,        KC_LCBR,        KC_LPRN,        KC_KP_ASTERISK,                                 KC_PERC,        KC_RPRN,        KC_RCBR,        KC_RBRC,        KC_TILD,        KC_F11,
     KC_TRANSPARENT, KC_DQUO,        KC_EXLM,        KC_KP_EQUAL,    KC_KP_MINUS,    KC_HASH,                                        OSM(MOD_HYPR),  OSM(MOD_RGUI),  OSM(MOD_RALT),  OSM(MOD_RSFT),  OSM(MOD_RCTL),  KC_F12,
     KC_TRANSPARENT, KC_QUOTE,       KC_AT,          KC_KP_PLUS,     KC_UNDS,        KC_CIRC,                                        KC_NO,          OSM(MOD_MEH),   KC_AMPR,        KC_PIPE,        KC_BSLS,        KC_F13,
@@ -184,17 +186,26 @@ bool rgb_matrix_indicators_user(void) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case CMD_TAB:
-    if (record->event.pressed) {
-      // CMD + TAB
-      tap_code16(G(KC_TAB));
-    }
-    break;
+      if (record->event.pressed) {
+        // CMD + TAB
+        tap_code16(G(KC_TAB));
+      }
+      break;
     case MAC_DND:
       HSS(0x9B);
-
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
+      }
+      return false;
+    case CLEAR_OSM_MOD_LEFT:
+      if (record->event.pressed) {
+        clear_oneshot_mods();
+      }
+      return false;
+    case CLEAR_OSM_MOD_RIGHT:
+      if (record->event.pressed) {
+        clear_oneshot_mods();
       }
       return false;
     case SWAP_BASE_LAYER_COLOR:
@@ -202,9 +213,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         current_color_index = (current_color_index + 1) % COLOR_COUNT;
         user_config.color_index = current_color_index;
       }
-      return false;
+      return false; // Skip all further processing of this key
   }
-  return true;
+  return true; // Process all other keycodes normally
 }
 
 
