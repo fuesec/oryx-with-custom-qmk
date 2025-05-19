@@ -6,15 +6,21 @@
 
 #define USB_SUSPEND_WAKEUP_DELAY 0
 #undef MOUSEKEY_INTERVAL
-#define MOUSEKEY_INTERVAL 10
+#define MOUSEKEY_INTERVAL 13
+
+#undef MOUSEKEY_WHEEL_DELAY
+#define MOUSEKEY_WHEEL_DELAY 0
 
 #undef MOUSEKEY_DELAY
-#define MOUSEKEY_DELAY 40
+#define MOUSEKEY_DELAY 10
+
+#undef MOUSEKEY_MAX_SPEED
+#define MOUSEKEY_MAX_SPEED 6
 
 #undef MOUSEKEY_WHEEL_INTERVAL
 #define MOUSEKEY_WHEEL_INTERVAL 65
 
-#define SERIAL_NUMBER "M4Mm0/yoZWJP"
+#define SERIAL_NUMBER "M4Mm0/pjbRBG"
 #define LAYER_STATE_8BIT
 #define HSS(report) host_system_send(record->event.pressed ? report : 0); return false
 
