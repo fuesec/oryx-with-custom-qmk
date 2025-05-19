@@ -298,11 +298,21 @@ const key_override_t delete_key_override =
     	KC_BSPC,             // Trigger key
     	KC_DEL,              // Replacement key
     	~0,                  // Activate on all layers
-    	MOD_MASK_CAG,        // Do not activate when
+    	MOD_MASK_GUI,        // Do not activate when
+    	ko_option_no_reregister_trigger); // Specifies that the play key is not registered again after lifting "Trigger modifier"
+
+const key_override_t delete_word_key_override =
+	ko_make_with_layers_negmods_and_options(
+   		MOD_MASK_SHIFT | MOD_MASK_ALT,      // Trigger modifier
+    	KC_BSPC,             // Trigger key
+    	MO(KC_DEL),              // Replacement key
+    	~0,                  // Activate on all layers
+    	MOD_MASK_GUI,        // Do not activate when
     	ko_option_no_reregister_trigger); // Specifies that the play key is not registered again after lifting "Trigger modifier"
 
 const key_override_t *key_overrides_list[] = {
   &delete_key_override,
+  &delete_word_key_override,
   NULL
 };
 
